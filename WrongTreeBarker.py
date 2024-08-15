@@ -3,6 +3,7 @@ from telegram import Bot
 import geojson
 import schedule
 import time
+import asyncio
 
 # setup for overpass turbo query:
 api = overpy.Overpass()
@@ -13,8 +14,8 @@ oldfeatures = []
 api_token = "INSERT TELEGRAM API TOKEN HERE"
 chat_id = "YOUR CHAT ID"
 bot=Bot(token=api_token)
-def send_notification(message):
-    bot.send_message(chat_id=chat_id, text=message)
+async def send_notification(message):
+    await bot.send_message(chat_id=chat_id, text=message)
 
 #helper function to parse overpass query response
 def way_to_feature(way):
@@ -25,7 +26,7 @@ def way_to_feature(way):
         properties=way.tags
     )
 
-def runbot(): #this function gets called periodically to run the query and send the resulting telegram message
+async def runbot(): #this function gets called periodically to run the query and send the resulting telegram message
     global oldfeatures
     queryresponse = api.query(querystring)
     features=[]
@@ -37,16 +38,16 @@ def runbot(): #this function gets called periodically to run the query and send 
     elif features != oldfeatures:
         print(str(time.ctime(time.time()))+": There were wrong trees: "+str(features))
         notificationmessage="🚨🚨🚨!!!ALARM!!! 🚨🚨🚨 \nSomeone mapped a tree 🌳🌲🌴 incorrectly!!!"
-        send_notification(notificationmessage)
+        await send_notification(notificationmessage)
         for feature in features:
-            bot.send_location(chat_id=chat_id, longitude=feature["geometry"]["coordinates"][0][0], latitude=feature["geometry"]["coordinates"][0][1])
+            await bot.send_location(chat_id=chat_id, longitude=feature["geometry"]["coordinates"][0][0], latitude=feature["geometry"]["coordinates"][0][1])
         oldfeatures=features
     else:
         print(str(time.ctime(time.time()))+": Nothing has changed about the features.")
 
 
 print("Starting...")
-schedule.every(15).minutes.do(runbot) #starts a query every 15min
+schedule.every(15).minutes.do(lambda: asyncio.run(runbot())) #starts a query every 15min
 
 
 while True:
