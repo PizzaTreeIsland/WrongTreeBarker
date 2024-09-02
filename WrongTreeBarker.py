@@ -4,6 +4,7 @@ import geojson
 import schedule
 import time
 import asyncio
+from telegram.request import HTTPXRequest
 
 # setup for overpass turbo query:
 api = overpy.Overpass()
@@ -13,7 +14,8 @@ oldfeatures = []
 # setup for telegram bot:
 api_token = "INSERT TELEGRAM API TOKEN HERE"
 chat_id = "YOUR CHAT ID"
-bot=Bot(token=api_token)
+trequest = HTTPXRequest(connection_pool_size=20)
+bot=Bot(token=api_token, request=trequest)
 async def send_notification(message):
     await bot.send_message(chat_id=chat_id, text=message)
 
