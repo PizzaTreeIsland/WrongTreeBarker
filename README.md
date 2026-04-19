@@ -32,32 +32,3 @@ Insert both the API Token and the Chat ID into the appropriate parts of the Wron
 
 Adjust the querytext string to query for whatever issues you want to monitor. For simple queries, the query wizard tool on [Overpass Turbo](https://overpass-turbo.eu/) is useful. For examples of more complex queries, see the [OSM Wiki page on overpass query examples](https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_API_by_Example). ChatGPT is also a surprisingly good tool for writing queries of mid to high complexity. 
 
-Note that, due to the nature of my tree search, I set up the script to only parse query results that are ways. For nodes or relations, please expand the helper function by its appropriate counterparts: 
-
-```python
-def node_to_feature(node):
-  return geojson.Feature(
-    id=node.id,
-    geometry=geojson.Point((float(node.lon), float(node.lat))),
-    properties=node.tags
-    )
-```
-or 
-```python
-def relation_to_feature(relation):
-  # This example handles only multipolygon type of relations
-  polygons = []
-  for member in relation.members:
-     if isinstance(member, overpy.Way):
-        coordinates = [(float(node.lon), float(node.lat)) for node in member.nodes]
-           polygons.append(coordinates)
-           return geojson.Feature(
-              id=relation.id,
-              geometry=geojson.MultiPolygon([polygons]),
-              properties=relation.tags
-              )
-```
-
-
-
-
