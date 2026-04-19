@@ -9,7 +9,7 @@ from telegram.request import HTTPXRequest
 
 # setup for overpass turbo query:
 url = "http://overpass-api.de/api/interpreter" #Or any other overpass server
-querystring = "[out:json][timeout:60000];way[\"natural\"=\"font\"];out center;"
+querystring = "[out:json][timeout:60000];way[\"natural\"=\"tree\"];out center;"
 oldfeatures = []
 api_token = "YourApiToken"
 chat_id = "YourChatID"
