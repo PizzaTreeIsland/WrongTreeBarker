@@ -14,7 +14,7 @@ I pride myself in having completely eliminated trees that are wrongly mapped as 
 I'm not suggesting anyone should do the very same thing as those tree accidents occur rarely and when they do, they take only so many people to fix. However, I publish this so you can be inspired to chose your own "pet issue" to fix and keep fixed. How about overlapping buildings in your home town or rogue orphan nodes in your region? 
 
 # Usage
-Create your own telegram bot by interacting with the [BotFather telegram account](https://t.me/BotFather). You will recieve an API Token. You can then find out your personal Telegram Chat ID, for example using this python function: 
+Create your own telegram bot by interacting with the [BotFather telegram account](https://t.me/BotFather). You will recieve an API Token. You can then find out your personal Telegram Chat ID, for example by sending a message to your bot and later running this python function: 
 
 ```python
 from telegram import Bot
